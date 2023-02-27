@@ -42,7 +42,7 @@ def fit(hist1d,fitfun):
 def plot(hist1,ft,hist2):
 	c1 = TCanvas( 'c1', 'Example with Formula', 200, 10, 700, 500 )
 	legend = TLegend(0.64, 0.62, 0.76, 0.92, "")
-	legend.SetTextSize(0.021)
+	legend.SetTextSize(0.030)
 	legend.SetFillColor(0)
 	#legend.SetFillStyle(3002)
 	hist1.SetLineColor(0)
@@ -54,7 +54,9 @@ def plot(hist1,ft,hist2):
 	legend.AddEntry(hist2,"New Hist From Fit")
 	hist1.Draw("p")
 	ft.Draw("same")
+	hist2.SetLineWidth(8)
 	hist2.Draw("same P")
+	legend.Draw()
 	c1.SaveAs("hunc.pdf")
 
 
