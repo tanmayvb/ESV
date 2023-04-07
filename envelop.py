@@ -9,10 +9,10 @@ import numpy as np
 #import matplotlib.pyplot as plt
 
 
-openf = TFile("Unfolded_Result_19UL18_Data_PY8.root", "read")
-name = 'Unfold2D/Edd_TUnfold_NoReg_typ_0_eta0_3_pt7'
-#openf = TFile("Total_unc.root","read")
-#name = "total_erro_1_eta0_24_pt7"
+#openf = TFile("Unfolded_Result_19UL18_Data_PY8.root", "read")
+#name = 'Unfold2D/Edd_TUnfold_NoReg_typ_0_eta0_3_pt7'
+openf = TFile("Total_unc.root","read")
+name = "total_erro_0_eta0_3_pt0"
 hist1d=openf.Get(name)
 
 bins = hist1d.GetNbinsX()
@@ -39,33 +39,43 @@ def fit(hist1d,fitfun):
 	hist1d.Fit(ft)
 	return hist1d, ft
 
+def fitunc(hist1d,fitfun):
+	ft = ROOT.TF1("ft",fitfun)
+	hist1d.Fit(ft, "L")
+	return hist1d, ft
+
 def plot(hist1,ft,hist2):
-	c1 = TCanvas( 'c1', 'Example with Formula', 200, 10, 700, 500 )
-	legend = TLegend(0.64, 0.62, 0.76, 0.92, "")
-	legend.SetTextSize(0.030)
-	legend.SetFillColor(0)
-	#legend.SetFillStyle(3002)
-	hist1.SetLineColor(0)
-	ft.SetLineColor(2)
-	hist1.SetLineColor(3)
-	legend.SetBorderSize(0)
-	legend.AddEntry(hist1,"Base Hist")
-	legend.AddEntry(ft,"Fit Hist",'l')
-	legend.AddEntry(hist2,"New Hist From Fit")
-	hist1.Draw("p")
-	ft.Draw("same")
-	hist2.SetLineWidth(2)
-	hist2.SetMarkerSize(0.4)
-	hist2.SetMarkerStyle(21)
-	hist2.Draw("same P")
-	legend.Draw()
-	c1.SaveAs("hunc.pdf")
+    c1 = TCanvas( 'c1', 'Example with Formula', 200, 10, 700, 500 )
+    legend = TLegend(0.64, 0.62, 0.76, 0.92, "")
+    legend.SetTextSize(0.030)
+    legend.SetFillColor(0)
+    #legend.SetFillStyle(3002)
+    hist1.SetLineColor(0)
+    ft.SetLineColor(2)
+    hist1.SetLineColor(3)
+    hist1.SetMarkerStyle(21)
+    hist1.SetMarkerSize(0.8)
+    hist1.SetMarkerColor(3)
+    legend.SetBorderSize(0)
+    legend.AddEntry(hist1,"Base Hist")
+    legend.AddEntry(ft,"Fit Hist",'l')
+    legend.AddEntry(hist2,"New Hist From Fit")
+    hist1.Draw("p")
+    ft.Draw("same")
+    hist2.SetLineWidth(2)
+    hist2.SetMarkerSize(0.8)
+    hist2.SetMarkerStyle(21)
+    hist2.Draw("same P")
+    legend.Draw()
+    c1.SaveAs("Smooth.pdf")
+
 
 
 
 	
 #hist1d.Draw()
-fithist, ft = fit(hist1d,"pol7")
+#fithist, ft = fit(hist1d,"pol7")
+fithist, ft = fitunc(hist1d,"pol3")
 
 fitresult = fithist.GetFunction("ft")
 #print (fitresult.Eval(-2))
