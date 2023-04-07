@@ -39,6 +39,7 @@ def fit(hist1d,fitfun):
 	hist1d.Fit(ft)
 	return hist1d, ft
 
+# Use Likelihood methode default is chi2
 def fitunc(hist1d,fitfun):
 	ft = ROOT.TF1("ft",fitfun)
 	hist1d.Fit(ft, "L")
